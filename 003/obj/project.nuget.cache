@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "7FdIpERK0c0dZ04/jXQ8MDIj3kVRX82Esm+A0AfmyJRf13FgISPSBds/oeJa3L0jNBFxb8U86znSMSgW0jBiCg==",
+  "success": true,
+  "projectFilePath": "C:\\Projects\\project-euler\\003\\003.fsproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\stefa\\.nuget\\packages\\fsharp.core\\8.0.100\\fsharp.core.8.0.100.nupkg.sha512"
+  ],
+  "logs": []
+}
