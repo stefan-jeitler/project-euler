@@ -2,4 +2,4 @@
 
 at least a few of them
 
-![Badge](https://projecteuler.net/profile/rainer_zufall2.png)
+![Badge](https://projecteuler.net/profile/stefan-jeitler.png)
