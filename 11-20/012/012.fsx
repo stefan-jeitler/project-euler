@@ -5,11 +5,7 @@ let findDivisors (n: uint64) =
         if d > limit then
             acc
         elif n % d = 0UL then
-            let accumulator =
-                if n / d <> d then
-                   d :: ((n / d) :: acc ) 
-                else 
-                   d :: acc
+            let accumulator = if n / d <> d then d :: ((n / d) :: acc) else d :: acc
 
             innerFn (d + 1UL) accumulator
         else
