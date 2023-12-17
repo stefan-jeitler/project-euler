@@ -49,13 +49,13 @@ let adjacentPositions (grid: Grid) (startPos: Position) =
     let existsInGrid = Grid.exists grid
 
     let getPositions maxDepth moveInDirection =
-        let rec getPositions' pos (acc: Position list) =
+        let rec innerFn pos (acc: Position list) =
             if acc.Length < maxDepth && existsInGrid pos then
-                getPositions' (moveInDirection pos) (pos :: acc)
+                innerFn (moveInDirection pos) (pos :: acc)
             else
                 acc
 
-        getPositions' startPos []
+        innerFn startPos []
 
     let towardsRight = Position.incrementColumn
     let towardsDownRight = (Position.incrementLine >> Position.incrementColumn)
@@ -73,12 +73,12 @@ let adjacentPositions (grid: Grid) (startPos: Position) =
 let parseLine (l: string) = l.Split(' ')
 let grid = File.ReadAllLines filePath |> Array.map parseLine |> array2D
 
-let productsOfFourAdjacentItems grid startPos (acc: int list) =
+let productsOfFourAdjacentItems grid startPos =
     let adjacentPositionsInGrid = adjacentPositions grid
     let gridValue = Grid.value grid
     let moveNext = Grid.moveNext grid
 
-    let rec productsOfFourAdjacentItems' pos acc =
+    let rec innerFn pos acc =
         match pos with
         | None -> acc
         | Some p ->
@@ -92,11 +92,11 @@ let productsOfFourAdjacentItems grid startPos (acc: int list) =
                 | _ -> productsOfAdjacentItems |> List.max
 
             let nextPos = moveNext p
-            productsOfFourAdjacentItems' nextPos (largestProductOfAdjacentItems :: acc)
+            innerFn nextPos (largestProductOfAdjacentItems :: acc)
 
-    productsOfFourAdjacentItems' startPos acc
+    innerFn (Some startPos) []
 
 let maxProduct =
-    productsOfFourAdjacentItems grid (Some Position.initialPosition) [] |> List.max
+    productsOfFourAdjacentItems grid Position.initialPosition |> List.max
 
 printfn $"result %i{maxProduct}"
