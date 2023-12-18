@@ -99,8 +99,8 @@ let wordify number =
     innerFn 0 ""
 
 let result =
-    [ 1..1000 ]
-    |> List.map wordify
-    |> List.map (fun x -> Regex.Replace(x, "\s+", ""))
-    |> List.map _.Length
-    |> List.sum
+    { 1..1000 }
+    |> Seq.map wordify
+    |> Seq.map (fun x -> Regex.Replace(x, "\s+", ""))
+    |> Seq.map _.Length
+    |> Seq.sum
