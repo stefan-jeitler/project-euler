@@ -2,7 +2,8 @@ open System.Text.RegularExpressions
 
 let words =
     Map
-        [ 1, "one"
+        [ 0, ""
+          1, "one"
           2, "two"
           3, "three"
           4, "four"
@@ -32,75 +33,36 @@ let words =
           100, "hundred"
           1000, "thousand" ]
 
-let ``and`` = "and"
 
-open System
+let translateThousands n = 
+    match n / 1000 with
+    | x when x > 0 && x < 10 -> $"%s{words[x]} %s{words[1000]}"
+    | _ -> ""
 
-let wordify number =
-    if number > 9999 then
-        failwith "Numbers greater than 9999 are not supported"
+let translateHundreds n = 
+    let h =  n / 100 % 10
+    if h > 0 then
+        $" %s{words[h]} %s{words[100]}"
+    else ""
 
-    let numberAsString = string number
+let translateLastTwoDigits n = 
+    match n % 100 with
+    | x when x <= 20 -> $" %s{words[x]}"
+    | x -> $" %s{words[x / 10 * 10]} %s{words[x % 10]}"
 
-    let getSingleDigitAsInt idx =
-        numberAsString[idx] |> Char.GetNumericValue |> int
+let translate number = 
+    let thousands = translateThousands number
+    let hundreds = translateHundreds number
+    let lastTwoDigits = translateLastTwoDigits number
 
-    let parseThousandSignificance idx =
-        let n = getSingleDigitAsInt idx
-        let n = words[n]
+    let addAnd = if number > 99 then " and" else ""
 
-        $"%s{n} %s{words[1000]}"
+    (thousands + hundreds + addAnd + lastTwoDigits)
 
-    let parseHundredSignificance idx =
-        let n = getSingleDigitAsInt idx
-
-        if n = 0 then "" else $"%s{words[n]} %s{words[100]}"
-
-    let parseDecadeSignificance idx =
-        let n = numberAsString[idx..] |> int
-        let addAnd =
-            match numberAsString.Length with
-            | 1 -> ""
-            | 2 when idx = 0 -> ""
-            | _ -> ``and``
-            
-        match n with
-        | 0 -> ""
-        | _ when n <= 20 -> $"%s{addAnd} %s{words[n]}"
-        | _ ->
-            let tenSignificance = (getSingleDigitAsInt idx) * 10
-            let oneSignificance =
-                match getSingleDigitAsInt (idx + 1) with
-                | 0 -> ""
-                | x -> words[x]
-
-            $"%s{addAnd} %s{words[tenSignificance]} %s{oneSignificance}"
-
-    let isLastIndex idx = numberAsString.Length - 1 = idx
-    
-    let parseSingleDigit idx acc =
-        let digits = max (numberAsString.Length - idx - 1) 1
-        let significance = 10. ** digits |> int
-        
-        if isLastIndex idx && number > 9 then acc
-        else
-            match significance with
-            | 1000 -> $"%s{acc} %s{parseThousandSignificance idx}"
-            | 100 -> $"%s{acc} %s{parseHundredSignificance idx}"
-            | 10 -> $"%s{acc} %s{parseDecadeSignificance idx}"
-            | _ -> failwith "Something went badly wrong"
-
-    let rec innerFn index acc =
-        if index >= numberAsString.Length then
-            acc
-        else
-            innerFn (index + 1) (parseSingleDigit index acc)
-
-    innerFn 0 ""
 
 let result =
     { 1..1000 }
-    |> Seq.map wordify
+    |> Seq.map translate
     |> Seq.map (fun x -> Regex.Replace(x, "\s+", ""))
     |> Seq.map _.Length
     |> Seq.sum
