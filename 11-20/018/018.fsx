@@ -5,32 +5,22 @@ let filePath = Path.Combine(__SOURCE_DIRECTORY__, "triangle.txt")
 let triangle =
     File.ReadAllLines filePath
     |> Array.map (fun x -> x.Trim().Split(" ") |> Array.map int |> Array.toList)
-    |> Array.rev
+    |> Array.toList
 
-let rec findPath line (acc: int list) =
-    let isFirstLine = line = 0
-    let isLastLine = triangle.Length - 1 = line
-    let skipLine () = findPath (line + 1) acc
+let mergeLines (a: int list) (b: int list) =
+    if abs (a.Length - b.Length) <> 1 then
+        failwith "length mismatch between adjacent lines"
 
-    let maxAdjacent currentIdx (line: int list) =
-        max (line[currentIdx]) (line[currentIdx + 1])
+    let (top, bottom) = if a.Length > b.Length then (b, a) else (a, b)
 
-    let sumEntry number index =
-        if line < 2 then
-            number + (maxAdjacent index triangle[line - 1])
-        else
-            number + maxAdjacent index acc
+    let maxOfAdjacentBottom indexOfTop =
+        max (bottom[indexOfTop]) bottom[indexOfTop + 1]
 
-    if isFirstLine then
-        skipLine ()
-    elif isLastLine then
-        sumEntry (triangle[line][0]) 0
-    else
-        let folder (idx, acc) current =
-            (idx + 1, (sumEntry current idx) :: acc)
+    top |> List.mapi (fun i x -> x + maxOfAdjacentBottom i)
 
-        let _, acc = triangle[line] |> List.fold folder (0, [])
+let folder (next: int list) (acc: int list) =
+    match acc with
+    | [] -> next
+    | _ -> mergeLines next acc
 
-        findPath (line + 1) (acc |> List.rev)
-
-let result = findPath 0 []
+let result = (triangle, []) ||> List.foldBack folder |> List.head
