@@ -18,7 +18,7 @@ let multiplicativeOrder a n =
     else
         let rec loop kn r =
             let result = a * r % n
-            if result = 1 then kn + 1 else loop (kn + 1) rest
+            if result = 1 then kn + 1 else loop (kn + 1) result
 
         let result = loop 1 a
 
