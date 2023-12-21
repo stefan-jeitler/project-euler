@@ -17,12 +17,12 @@ let multiplicativeOrder a n =
         None
     else
         let rec loop kn r =
-            let rest = a * r % n
-            if rest = 1 then kn + 1 else loop (kn + 1) rest
+            let result = a * r % n
+            if result = 1 then kn + 1 else loop (kn + 1) rest
 
-        let rest = loop 1 a
+        let result = loop 1 a
 
-        match rest with
+        match result with
         | r when r < 1 -> None
         | r -> Some r
 
