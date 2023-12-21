@@ -10,7 +10,7 @@ let rec gcd a b =
     | (a, 0) -> a
     | (a, b) -> gcd b (a % b)
 
-let mtiplicativeOrder a n =
+let multiplicativeOrder a n =
     let d = gcd a n
 
     if d <> 1 then
@@ -26,13 +26,13 @@ let mtiplicativeOrder a n =
         | r when r < 1 -> None
         | r -> Some r
 
-let mtiplicativeOrder10 = mtiplicativeOrder 10
+let multiplicativeOrder10 = multiplicativeOrder 10
 
 let isFullReptendPrime n =
     if not (isPrime n) then
         false
     else
-        match mtiplicativeOrder10 n with
+        match multiplicativeOrder10 n with
         | Some p when p = (n - 1) -> true
         | _ -> false
 
