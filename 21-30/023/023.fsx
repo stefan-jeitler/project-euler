@@ -7,17 +7,14 @@ let isAbundant n = sumOfDivisors n > n
 
 let totalRange = [ 1UL .. 28123UL ]
 
-let abundantNumbers =
-    totalRange
-    |> List.filter isAbundant
+let abundantNumbers = totalRange |> List.filter isAbundant
 
 let sumOfAllAbundantNumbers =
     abundantNumbers
     |> Seq.collect (fun a -> abundantNumbers |> Seq.map (fun b -> a + b))
     |> set
 
-let result = 
+let result =
     totalRange
     |> List.filter (fun x -> not (sumOfAllAbundantNumbers.Contains x))
     |> List.sum
-

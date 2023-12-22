@@ -14,7 +14,7 @@ let fib =
 let digitsCount n = n |> string |> _.Length
 
 let result =
-    fib 
+    fib
     |> Seq.indexed
     |> Seq.skipWhile (fun (_, x) -> (digitsCount x) < 1000)
     |> Seq.head

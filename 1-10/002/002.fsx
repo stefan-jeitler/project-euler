@@ -10,5 +10,5 @@ let createNextTillCeiling ((first, second): int * int) =
 
 let result =
     Seq.unfold createNextTillCeiling (0, 1)
-    |> Seq.filter (fun x -> x % 2 = 0 )
+    |> Seq.filter (fun x -> x % 2 = 0)
     |> Seq.sum

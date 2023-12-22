@@ -17,7 +17,7 @@ let rec findFirstMultiple (m: int list) n =
             (findFirstMultiple tail n)
 
 let result =
-    numbers 
-    |> List.map (findFirstMultiple multipliers) 
-    |> List.choose id 
+    numbers
+    |> List.map (findFirstMultiple multipliers)
+    |> List.choose id
     |> List.sum
