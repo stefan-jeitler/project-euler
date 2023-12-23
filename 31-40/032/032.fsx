@@ -14,6 +14,7 @@ let multiplications =
 
 let result =
     multiplications
-    |> List.filter isPanDigital
-    |> List.distinctBy (fun (_, _, c) -> c)
-    |> List.sumBy (fun (_, _, c) -> c)
+    |> Seq.filter isPanDigital
+    |> Seq.map (fun (_, _, c) -> c)
+    |> Seq.distinct
+    |> Seq.sum
