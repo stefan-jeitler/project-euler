@@ -1,3 +1,5 @@
+let (>=>) a b = a |> Option.bind b
+
 let findFirstSharedDigit n d =
     let d' = string d
     let firstDigit = n / 10
@@ -26,15 +28,14 @@ let calcCuriousFraction (n, d) =
     let q = (float n) / (float d)
     let sharedDigit = findFirstSharedDigit n d
 
-    match sharedDigit with
-    | None -> None
-    | Some x ->
+    sharedDigit >=> (fun x ->
         let n = removeDigit n x |> float
         let d = removeDigit d x |> float
 
         if (n < d) && (n / d) = q then Some q else None
+    ) 
 
 let result =
-    fractions |> List.map calcCuriousFraction |> List.choose id |> List.reduce (*)
+    fractions |> List.choose calcCuriousFraction |> List.reduce (*)
 
 // 0.01 => 1/100
