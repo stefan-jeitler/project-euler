@@ -4,7 +4,6 @@ let filePath = Path.Combine(__SOURCE_DIRECTORY__, "names.txt")
 let names =
     File.ReadAllText filePath |> _.Split(",") |> Seq.map _.Trim('\"') |> Seq.toList
 
-
 let alphabeticalValueByChar =
     [ 'A' .. 'Z' ] |> List.map (fun x -> (x, int x - 64)) |> dict
 
