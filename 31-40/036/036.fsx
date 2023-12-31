@@ -1,7 +1,7 @@
 let isPalindrom (n: string) =
-    let nAsStringReversed = n |> Seq.rev |> System.String.Concat
+    let nReversed = n |> Seq.rev |> System.String.Concat
 
-    n = nAsStringReversed
+    n = nReversed
 
 let toBinary (n: int) =
     System.Convert.ToString(n, 2).TrimStart('0')

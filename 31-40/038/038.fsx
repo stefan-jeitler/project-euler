@@ -11,7 +11,7 @@ let concatenate (a: uint64) (b: uint64) =
     let intermediate = a * (pown 10UL digitsOfB)
     intermediate + b
 
-let rec concatenatedProductOneToN n =
+let concatenatedProductOneToN n =
 
     let rec loop m acc =
         let next = concatenate acc (n * m)
