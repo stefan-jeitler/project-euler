@@ -20,9 +20,10 @@ let rec permutations l =
 
 let decimals = [ '0' .. '9' ]
 
-permutations decimals
-|> Seq.map List.toArray
-|> Seq.map (fun x -> System.String x)
-|> Seq.sort
-|> Seq.skip 999_999
-|> Seq.head
+let result = 
+    permutations decimals
+    |> Seq.map List.toArray
+    |> Seq.map (fun x -> System.String x)
+    |> Seq.sort
+    |> Seq.skip 999_999
+    |> Seq.head
