@@ -24,8 +24,7 @@ let allRotations n =
 let allRotationsArePrimes n =
     let rotations = allRotations n
 
-    let r = rotations |> List.filter (fun x -> not (isPrime x))
-    r.Length = 0
+    rotations |> List.forall (fun x -> isPrime x)
 
 let primesBelowOneMillion = { 2..1_000_000 } |> Seq.filter isPrime
 

@@ -16,9 +16,10 @@ let wordValue c =
     c |> Seq.map (fun x -> alphabeticalValueByChar[x]) |> Seq.sum
 
 let isTriangleNumber (n: int) =
-    let x = (sqrt (1. + 8. * float n) - 1.) / 2. 
+    // quadratic equation
+    let x1 = (sqrt (1. + 8. * float n) - 1.) / 2. 
 
-    isInteger x
+    isInteger x1
 
 let result =
     words |> List.map wordValue |> List.filter isTriangleNumber |> List.length
