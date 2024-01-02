@@ -22,16 +22,14 @@ let calcDifferencesBetweenItems l =
               ((x, y), y - x) ]
 
 let tripleWithSpecialProperty x =
-    let candidate =
-        calcDifferencesBetweenItems x
-        |> List.groupBy (fun (_, diff) -> diff)
-        |> List.filter (fun (_, v) -> v.Length = 2)
-        |> List.map (fun (_, v) -> v |> List.collect (fun ((a, b), diff) -> [ a; b ]) |> List.distinct)
-        |> List.collect id
-
-    match candidate with
-    | x when x.Length = 3 -> Some(x[0], x[1], x[2])
-    | _ -> None
+    calcDifferencesBetweenItems x
+    |> List.groupBy (fun (_, diff) -> diff)
+    |> List.filter (fun (_, v) -> v.Length = 2)
+    |> List.map (fun (_, v) -> v |> List.collect (fun ((a, b), diff) -> [ a; b ]) |> List.distinct)
+    |> List.collect id
+    |> function
+        | x when x.Length = 3 -> Some(x[0], x[1], x[2])
+        | _ -> None
 
 let (<|<) n digits = (uint64 n) * pown 10UL digits
 
@@ -47,4 +45,4 @@ let result =
     |> Seq.filter (fun x -> x |> List.contains 1487 |> not)
     |> Seq.choose tripleWithSpecialProperty
     |> Seq.head
-    |> (fun (a, b, c) -> (a <|< 8) + ((b <|< 4) + uint64 c))
+    |> fun (a, b, c) -> (a <|< 8) + ((b <|< 4) + uint64 c)
