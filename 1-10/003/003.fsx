@@ -8,4 +8,6 @@ let rec calculatePrimeFactors product factor (acc: uint64 list) =
 
 let primeFactors n = calculatePrimeFactors n 2UL []
 
-let result = primeFactors 600851475143UL
+let result = 
+    primeFactors 600851475143UL
+    |> List.max
