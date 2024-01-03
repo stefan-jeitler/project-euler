@@ -25,10 +25,10 @@ let tripleWithSpecialProperty x =
     calcDifferencesBetweenItems x
     |> List.groupBy (fun (_, diff) -> diff)
     |> List.filter (fun (_, v) -> v.Length = 2)
-    |> List.map (fun (_, v) -> v |> List.collect (fun ((a, b), diff) -> [ a; b ]) |> List.distinct)
+    |> List.map (fun (_, v) -> v |> List.collect (fun ((a, b), _) -> [ a; b ]) |> List.distinct)
     |> List.collect id
     |> function
-        | x when x.Length = 3 -> Some(x[0], x[1], x[2])
+        | x when x.Length = 3 -> Some (x[0], x[1], x[2])
         | _ -> None
 
 let (<|<) n digits = (uint64 n) * pown 10UL digits
@@ -38,11 +38,12 @@ let result =
     |> List.map (fun x ->
         primesOfInterest
         |> List.filter (isPermutation x)
-        |> List.collect (fun y -> [ x; y ]))
-    |> Seq.map (fun x -> x |> List.distinct |> List.sort)
+        |> List.collect (fun y -> [ x; y ])
+        |> List.distinct 
+        |> List.sort)
     |> Seq.filter (fun x -> x.Length >= 3)
     |> Seq.distinct
     |> Seq.filter (fun x -> x |> List.contains 1487 |> not)
     |> Seq.choose tripleWithSpecialProperty
     |> Seq.head
-    |> fun (a, b, c) -> (a <|< 8) + ((b <|< 4) + uint64 c)
+    |> fun (a, b, c) -> (a <|< 8) + (b <|< 4) + uint64 c

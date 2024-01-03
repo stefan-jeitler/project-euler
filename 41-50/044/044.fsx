@@ -20,4 +20,4 @@ let result =
     pentagonalPairs
     |> Seq.skipWhile (fun x -> not ((isSumPentagonal x) && (isDiffPentagonal x)))
     |> Seq.head
-    |> (fun (pj, pk) -> (pj - pk))
+    |> fun (pj, pk) -> (pj - pk)
