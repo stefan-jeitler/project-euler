@@ -25,8 +25,9 @@ let isPrime n =
         let limit = n |> float |> sqrt |> int
         { 2..limit } |> Seq.exists (fun x -> n % x = 0) |> not
 
+let primesGenerator = Seq.initInfinite (fun x -> x + 2) |> Seq.filter isPrime
 let estimatedLimit = 1_000_000
-let primes = { 2..estimatedLimit } |> Seq.filter isPrime |> Set
+let primes = primesGenerator |> Seq.takeWhile (fun x -> x <= estimatedLimit) |> Set
 
 let digits n =
     if n = 0 then
@@ -35,11 +36,11 @@ let digits n =
         n |> float |> log10 |> floor |> int |> (+) 1
 
 let place n i r =
-    let placementAtRightPlace = r * pown 10 i
-    let placementWithRemaingingDigits = placementAtRightPlace + (n % (pown 10 i))
+    let replacementAtProperPlace = r * pown 10 i
+    let replacementWithRemaingingDigits = replacementAtProperPlace + (n % (pown 10 i))
 
     let x = pown 10 (i + 1)
-    (n / x) * x + placementWithRemaingingDigits
+    (n / x) * x + replacementWithRemaingingDigits
 
 let replace (number: int) pattern (replacements: int list) =
     let indices =
@@ -75,30 +76,28 @@ let generatePatterns digits =
     |> Seq.distinct
     |> Seq.toList
 
-let patterns = [ 1..9 ] |> List.map (fun x -> x, generatePatterns x) |> Map
+let patterns = [ 1..6 ] |> List.map (fun x -> x, generatePatterns x) |> Map
 
-let findFirstFamilies prime nPrimes =
+let familiesWithNPrimes nPrimes prime =
     let digitsCount = digits prime
     let lowerBound = pown 10 (digitsCount - 1)
 
     let result =
         patterns[digitsCount]
-        |> Seq.map (fun p -> p, (replace prime p [ 0..9 ]))
-        |> Seq.map (fun (p, x) -> p,
-                                            x
-                                            |> Seq.filter (fun x -> x >= lowerBound)
-                                            |> Seq.filter (fun x -> primes.Contains x)
-                                            |> Seq.toList)
-        |> Seq.filter (fun (p, x) -> x.Length = nPrimes)    
+        |> Seq.map (fun pattern -> pattern, (replace prime pattern [ 0..9 ]))
+        |> Seq.map (fun (p, r) ->
+            p,
+            r
+            |> Seq.filter (fun x -> x >= lowerBound)
+            |> Seq.filter (fun x -> primes.Contains x)
+            |> Seq.toList)
+        |> Seq.filter (fun (p, x) -> x.Length = nPrimes)
         |> Seq.toList
 
-    prime, result
+    match result with
+    | [] -> None
+    | r -> Some(prime, r)
 
-let result =
-    primes
-    |> Seq.map (fun x -> findFirstFamilies x 8)
-    |> Seq.filter (fun (_, r) -> r.Length <> 0)
-    |> Seq.take 1
-    |> Seq.head
-    |> (snd >> List.head >> snd)
-    |> List.min
+let familiesWith8Primes = familiesWithNPrimes 8
+let firstFamily = primesGenerator |> Seq.choose familiesWith8Primes |> Seq.head
+let result = firstFamily |> snd |> List.collect snd |> List.min
