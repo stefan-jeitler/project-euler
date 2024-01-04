@@ -35,12 +35,20 @@ let digits n =
     else
         n |> float |> log10 |> floor |> int |> (+) 1
 
-let place n i r =
-    let replacementAtProperPlace = r * pown 10 i
-    let replacementWithRemaingingDigits = replacementAtProperPlace + (n % (pown 10 i))
+// replace digit at i in number n with replacement r
+let replaceDigit n i r =
+    // e.g. replaceDigit 472 1 5 => 452
+    // a => 400
+    // b =>  50
+    // c =>   2
 
     let x = pown 10 (i + 1)
-    (n / x) * x + replacementWithRemaingingDigits
+    let a = (n / x) * x
+
+    let b = r * pown 10 i
+    let c = (n % (pown 10 i))
+    
+    a + b + c
 
 let replace (number: int) pattern (replacements: int list) =
     let indices =
@@ -52,7 +60,7 @@ let replace (number: int) pattern (replacements: int list) =
         |> Seq.toList
 
     let replaceAll x =
-        x |> Seq.fold (fun acc (i, r) -> place acc i r) number
+        x |> Seq.fold (fun acc (i, r) -> replaceDigit acc i r) number
 
     replacements
     |> Seq.map (fun r -> indices |> List.map (fun i -> (i, r)))
