@@ -22,8 +22,6 @@ let isLychrelNumberInLessThen50Iterations n =
 
     loop n 0
 
-isLychrelNumberInLessThen50Iterations 4992I
-
 let result =
     { 1I .. 9_999I }
     |> Seq.filter isLychrelNumberInLessThen50Iterations

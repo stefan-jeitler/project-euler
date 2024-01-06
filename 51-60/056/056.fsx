@@ -1,5 +1,5 @@
 let pairs =
-    [ for a in [ 1I..100I ] do
+    [ for a in [ 1I..99I ] do
           for b in [ 1..99 ] do
               a, b ]
 
