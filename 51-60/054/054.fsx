@@ -59,7 +59,7 @@ module RankParser =
 
     type RankParser = Hand -> RankParsingResult<ParsingHit>
 
-    let bind<'a> f result =
+    let bind f result =
         match result with
         | Miss h -> f h
         | Hit h -> Hit h
