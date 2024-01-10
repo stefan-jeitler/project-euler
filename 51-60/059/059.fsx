@@ -26,9 +26,9 @@ let decrypt (encrypted: byte list) (key: string) =
 
     (encrypted, keyRepeated) ||> List.zip |> List.map (fun (a, b) -> a ^^^ b)
 
-let upperCaseChars = [ 'A' .. 'Z' ]
+let upperCaseCharacters = [ 'A' .. 'Z' ]
 let lowercaseCharacters = [ 'a' .. 'z' ]
-let allCharacters = [ yield! lowercaseCharacters; yield! upperCaseChars ]
+let allCharacters = [ yield! lowercaseCharacters; yield! upperCaseCharacters ]
 
 let possibleKeys =
     [ for a in lowercaseCharacters do
@@ -41,7 +41,7 @@ let isVowel (c: char) = "AEIOUaeiou".IndexOf(c) >= 0
 let isConsonant (c: char) =
     allCharacters |> Seq.contains c && isVowel c |> not
 
-let addCountOfConsonantFollowedByAVowelOccurrence (c: string) =
+let addCountOfConsonantFollowedByAVowelOccurrences (c: string) =
     c,
     c
     |> Seq.windowed 2
@@ -53,7 +53,7 @@ let decryptedText =
     |> Seq.map (fun k -> decrypt encrypted (toString k))
     |> Seq.map toString
     // Words often consist of a consonant followed by a vowel
-    |> Seq.map addCountOfConsonantFollowedByAVowelOccurrence
+    |> Seq.map addCountOfConsonantFollowedByAVowelOccurrences
     |> Seq.maxBy snd
     |> fst
 

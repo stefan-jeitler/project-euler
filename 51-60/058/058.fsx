@@ -14,20 +14,19 @@ let primesOfSingleSquare (sideLength: int) =
     let maxValue = pown (uint64 sideLength) 2
 
     [ firstOfCurrentSquare..steps..maxValue ]
-    |> Seq.map isPrime
-    |> Seq.filter id
+    |> Seq.filter isPrime
     |> Seq.length
 
 let sideLengthPrimeRatios =
     Seq.unfold
         (fun (sideLength, (totalPoints, primePoints)) ->
-            let nextSideLength = sideLength + 2
-            let primesOfCurrentSquare = primesOfSingleSquare nextSideLength
-            let nextTotalPoints = totalPoints + 4
-            let nextPrimePoints = primePoints + primesOfCurrentSquare
-            let next = nextSideLength, primesRatio nextTotalPoints nextPrimePoints
-            let acc = (sideLength + 2, (nextTotalPoints, nextPrimePoints))
-            Some(next, acc))
+            let currentSideLength = sideLength + 2
+            let primesOfCurrentSquare = primesOfSingleSquare currentSideLength
+            let totalPoints = totalPoints + 4
+            let primePoints = primePoints + primesOfCurrentSquare
+            let current = currentSideLength, primesRatio totalPoints primePoints
+            let acc = (sideLength + 2, (totalPoints, primePoints))
+            Some(current, acc))
         (1, (1, 0))
 
 sideLengthPrimeRatios
