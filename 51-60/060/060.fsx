@@ -22,7 +22,7 @@ let memoize f =
         match exist with
         | true -> value
         | _ ->
-            // still not thread safe, but acceptable in this scenario to compute some values twice or more often
+            // optimistic concurrency issue here, but in this scenario it is acceptable to compute some values twice or more often
             dict.GetOrAdd(c, valueFactory = f)
 
 let isPrime' = memoize isPrime
