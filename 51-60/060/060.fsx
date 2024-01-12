@@ -42,7 +42,7 @@ let digits n =
     if n = 0 then
         1
     else
-        n |> float |> log10 |> floor |> int |> (+) 1
+        n |> float |> log10 |> ceil |> int
 
 let digits' = memoize digits
 
@@ -96,16 +96,16 @@ let createComputationForSinglePrime prime remainingPrimes wantedLength =
     }
 
 let combinations (allPrimes: int list) length =
-    let rec loop (primes: int list) (acc: Async<int list option> seq) =
+    let rec loop (primes: int list) =
         match primes with
-        | [] -> acc
+        | [] -> seq { async.Return None}
         | head :: tail ->
             seq {
-                let computation = createComputationForSinglePrime head tail length
-                yield! loop tail (Seq.append computation acc)
+                yield createComputationForSinglePrime head tail length
+                yield! loop tail
             }
 
-    loop allPrimes []
+    loop allPrimes
 
 let result =
     combinations firstNPrimes 5
