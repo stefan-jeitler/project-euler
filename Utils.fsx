@@ -30,3 +30,24 @@ let isPrime n =
 
 let digits n =
     if n = 0 then 1 else n |> float |> log10 |> ceil |> int
+
+
+let rec private inserts x l =
+    seq {
+        match l with
+        | [] -> yield [ x ]
+        | y :: rest ->
+            yield x :: l
+
+            for i in inserts x rest do
+                yield y :: i
+    }
+
+let rec permute l =
+    seq {
+        match l with
+        | [] -> yield []
+        | x :: rest ->
+            for p in permute rest do
+                yield! inserts x p
+    }
