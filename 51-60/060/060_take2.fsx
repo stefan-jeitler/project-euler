@@ -4,6 +4,7 @@
 open Utils
 
 let isPrime' = memoize isPrime
+let digits n = if n = 0 then 1 else n |> float |> log10 |> int |> (+) 1
 
 let estimatedLimit = 10_000
 let firstNPrimes = { 2..estimatedLimit } |> Seq.filter isPrime |> Seq.toList

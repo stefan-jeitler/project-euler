@@ -6,10 +6,10 @@ let firstNPrimes = { 2..estimatedLimit } |> Seq.filter isPrime |> Seq.toList
 
 let isPrime' = memoize isPrime
 
-let digits' = memoize digits
+let digits n = if n = 0 then 1 else n |> float |> log10 |> int |> (+) 1
 
 let concat left right =
-    let rightDigits = digits' right
+    let rightDigits = digits right
 
     (left * pown 10 rightDigits) + right
 

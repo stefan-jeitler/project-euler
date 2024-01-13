@@ -28,10 +28,6 @@ let isPrime n =
         let limit = float n |> sqrt |> ceil |> int
         seq { 5..2..limit } |> Seq.exists (fun x -> n % x = 0) |> not
 
-let digits n =
-    if n = 0 then 1 else n |> float |> log10 |> ceil |> int
-
-
 let rec private inserts x l =
     seq {
         match l with
