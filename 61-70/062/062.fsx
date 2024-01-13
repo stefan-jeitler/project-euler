@@ -1,41 +1,39 @@
-let isPermutation a b =
-    if a = b then
-        false
-    else
-        let a' = a |> string |> Seq.sort |> System.String.Concat
-        let b' = b |> string |> Seq.sort |> System.String.Concat
+let init: Map<string, uint64 list> = Map.empty
+let toSortedString: uint64 -> string = string >> Seq.sort >> System.String.Concat
 
-        a' = b'
+let add (map: Map<string, uint64 list>) key value =
+    map.Change(
+        key,
+        function
+        | Some l -> Some(value :: l)
+        | None -> Some [ value ]
+    )
 
-let findPermutations (numberWithSameDigitsCount: uint64 list) =
-    let rec loop (numbers: uint64 list) (acc: uint64 list list) =
-        match numbers with
-        | [] -> 
-            acc 
-            |> Seq.groupBy _.Length
-            |> Seq.maxBy fst
-            |> snd
+let testNumber (acc: Map<string, uint64 list>) cube =
+    let key = toSortedString cube
+    let acc = add acc key cube
 
+    if acc[key].Length = 5 then
+        acc, Some (acc[key] |> List.min)
+    else 
+        acc, None
+
+let cubes =
+    [ 5000UL .. 9_000UL ]
+    |> List.map (fun b -> pown b 3)
+
+let findPermutation (cubes: uint64 list) =
+    let rec loop c acc =
+        match c with
+        | [] -> None
         | head :: tail ->
-            let permutations = 
-                tail 
-                |> Seq.filter (fun x -> isPermutation head x)
-                |> Seq.toList
+            let (acc, result) = testNumber acc head
+            match result with
+            | Some r -> Some r
+            | None -> loop tail acc
 
-            loop tail ((head :: permutations) :: acc)
-
-    loop numberWithSameDigitsCount []
-
-// range found with trial and error
-let start = 5000UL
-let end' = 9000UL
+    loop cubes init
 
 let result = 
-    Seq.unfold (fun i -> Some (i, i + 1UL)) 1UL
-    |> Seq.skipWhile (fun x -> x < start)
-    |> Seq.takeWhile (fun x -> x <= end')
-    |> Seq.map (fun x -> pown x 3)
-    |> Seq.toList
-    |> findPermutations
-    |> Seq.map Seq.min
-    |> Seq.min
+    findPermutation cubes
+    |> Option.get
