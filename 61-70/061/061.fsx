@@ -33,7 +33,7 @@ type ConstraintsResult =
     | SomeMatch of (int -> bool) list
     | Unmatched
 
-let rec satisfy constraints numbers =
+let satisfy constraints numbers =
 
     let rec tryMatchSingleConstraint constraints n (acc: (int -> bool) list) =
         match constraints with

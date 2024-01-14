@@ -28,7 +28,7 @@ let numbersOfInterest =
 // The 6th number must close the circle
 let closeCircleAt = 6
 
-let createAccumulator left right =
+let join left right =
     let values =
         [ for l in (snd left) do
               for r in (snd right) do
@@ -38,26 +38,26 @@ let createAccumulator left right =
     { Types = [ fst left; fst right ]
       Values = values }
 
-let leftJoin (acc: int list) candidates =
-    let first = acc[0]
-    let last = acc |> List.last
+let leftJoin (left: int list) right =
+    let first = left[0]
+    let last = left |> List.last
 
-    let requiresCycle = (acc.Length + 1) = closeCircleAt
+    let requiresCycle = (left.Length + 1) = closeCircleAt
 
     let isCyclicToFirst last =
         lastTwoDigitsOf last = firstTwoDigitsOf first
 
     let next =
-        candidates
+        right
         |> List.tryFind (fun x ->
             lastTwoDigitsOf last = firstTwoDigitsOf x
             && (not requiresCycle || isCyclicToFirst x))
 
     match next with
-    | Some n -> [ yield! acc; n ]
-    | None -> acc
+    | Some n -> [ yield! left; n ]
+    | None -> left
 
-let addToAccumulator (acc: Accumulator) (b: PolygonalType * int list) =
+let add (acc: Accumulator) (b: PolygonalType * int list) =
     let types = [ yield! acc.Types; fst b ]
     let candidates = snd b
 
@@ -69,13 +69,13 @@ let addToAccumulator (acc: Accumulator) (b: PolygonalType * int list) =
     { Types = types; Values = values }
 
 let aggregate (combinations: (PolygonalType * int list) list) =
-    let acc = createAccumulator combinations[0] combinations[1]
+    let acc = join combinations[0] combinations[1]
 
     let rec loop combination acc =
         match combination with
         | [] -> acc.Values
         | head :: tail ->
-            let acc = addToAccumulator acc head
+            let acc = add acc head
             loop tail acc
 
     loop combinations[2..] acc
