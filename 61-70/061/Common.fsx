@@ -1,10 +1,8 @@
 module Common
 
-#load "../../Utils.fsx"
-
-open Utils
-
 let isInteger n = (n % 1.) = 0.
+
+let digits n = if n = 0 then 1 else n |> float |> log10 |> int |> (+) 1
 
 let isTriangular y =
     let x1 = (sqrt (1. + 8. * float y) - 1.) / 2.

@@ -22,7 +22,7 @@ let cubes =
     [ 5000UL .. 9_000UL ]
     |> List.map (fun b -> pown b 3)
 
-let findPermutation (cubes: uint64 list) =
+let findLowestOfFivePermutedCubes (cubes: uint64 list) =
     let rec loop c acc =
         match c with
         | [] -> None
@@ -35,5 +35,5 @@ let findPermutation (cubes: uint64 list) =
     loop cubes init
 
 let result = 
-    findPermutation cubes
+    findLowestOfFivePermutedCubes cubes
     |> Option.get
