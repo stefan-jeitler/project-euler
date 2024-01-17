@@ -9,6 +9,6 @@ let hexagonal (n: uint64) = n * (2UL * n - 1UL)
 let result =
     Seq.unfold (fun c -> Some(hexagonal c, c + 1UL)) 144UL
     // https://en.wikipedia.org/wiki/Hexagonal_number: Every hexagonal number is a triangular number
-    // -> no need to check triangular numbers
+    // -> no need to check for triangular numbers
     |> Seq.skipWhile (fun x -> not (isPentagonal x))
     |> Seq.head

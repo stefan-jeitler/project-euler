@@ -25,7 +25,7 @@ let hasAllSpecialProperty (found: int list) (candidate: int) =
 let goToNextPrimeGreaterThan x primes =
     primes |> List.skipWhile (fun p -> p <= x)
 
-let rec findLongestChainOfPrimesWithSpecialProperty start primes =
+let findLongestChainOfPrimesWithSpecialProperty start primes =
     let rec findChain (remainingPrimes: int list) acc =
         if remainingPrimes.IsEmpty then
             acc
