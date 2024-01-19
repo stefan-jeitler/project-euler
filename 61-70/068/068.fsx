@@ -30,10 +30,8 @@ let innerCycles =
                           then
                               [ a; b; c; d; e ] ]
 
-// 3. Permute the outer elements expect the first number
-// since it's the known first digit
-let outerPermutations =
-    permute outer[1..] |> Seq.map (fun x -> outer[0] :: x) |> Seq.toList
+// 3. Sort the outer numbers in descending order expect the first number in the list
+let outerNumbersOrdered = outer[0] :: (outer[1..] |> List.sortDescending)
 
 // 4. Create combinations
 let createGroupsOfThree outer =
@@ -48,9 +46,7 @@ let createGroupsOfThree outer =
               Total = outer + between + inner }))
 
 let result =
-    outerPermutations
-    |> List.map createGroupsOfThree
-    |> List.collect id
+    createGroupsOfThree outerNumbersOrdered
     // 5. Pick all inner lists that share the same total number, concatenate the groups of three and find the max value
     |> List.filter (fun x -> x |> List.groupBy _.Total |> List.length = 1)
     |> List.map (fun x ->
