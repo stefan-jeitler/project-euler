@@ -3,10 +3,7 @@
 open Utils
 
 let first20Primes =
-    Seq.initInfinite id
-    |> Seq.filter isPrime
-    |> Seq.take 20
-    |> Seq.toList
+    Seq.initInfinite id |> Seq.filter isPrime |> Seq.take 20 |> Seq.toList
 
 let upperBound = 1_000_000
 
