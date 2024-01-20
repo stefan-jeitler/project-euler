@@ -2,8 +2,8 @@
 
 open Utils
 
-let first20Primes = 
-    Seq.initInfinite (fun x -> x + 2)
+let first20Primes =
+    Seq.initInfinite id
     |> Seq.filter isPrime
     |> Seq.take 20
     |> Seq.toList
@@ -15,7 +15,6 @@ let result =
         match remainingPrimes with
         | [] -> failwith "not enough primes provided"
         | head :: _ when acc * head > upperBound -> acc
-        | head :: tail ->
-            loop tail (head * acc)
+        | head :: tail -> loop tail (head * acc)
 
     loop first20Primes 1

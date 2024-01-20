@@ -20,7 +20,8 @@ let memoize f =
             cache.GetOrAdd(c, valueFactory = f)
 
 let isPrime n =
-    if n <> 2 && n % 2 = 0 then
+    if n < 2 then false
+    elif n <> 2 && n % 2 = 0 then
         false
     elif n <> 3 && n % 3 = 0 then
         false
