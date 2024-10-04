@@ -30,7 +30,7 @@ let innerCycles =
                           then
                               [ a; b; c; d; e ] ]
 
-// 3. Sort the outer numbers in descending order expect the first number in the list
+// 3. Sort the outer numbers in descending order except the first number in the list
 let outerNumbersOrdered = outer[0] :: (outer[1..] |> List.sortDescending)
 
 // 4. Create combinations

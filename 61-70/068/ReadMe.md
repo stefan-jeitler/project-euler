@@ -26,6 +26,6 @@ With all that knowledge the problem can be solved in five steps.
 
 1. Split the numbers into two sets, the outer set with the largest five numbers and the inner set with the smallest five numbers.  
 2. The next step is to create pairs of the inner numbers that form a cycle.  
-3. Sort the outer numbers in descending order expect the first number in the list.
+3. Sort the outer numbers in descending order except the first number in the list.
 4. Create combinations with the inner cycles and the outer numbers that form a ``List<List<GroupOfThree>>``.
 5. Pick all inner lists that share the same total number, concatenate the groups of three and find the max value
