@@ -3,8 +3,7 @@ open System.IO
 
 let (/>) a b = Path.Combine(a, b)
 
-let cwd = AppContext.BaseDirectory
-let filePath = cwd /> "grid.txt"
+let filePath = __SOURCE_DIRECTORY__ /> "grid.txt"
 
 type Position = { Line: int; Column: int }
 
