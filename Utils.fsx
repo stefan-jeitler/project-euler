@@ -48,3 +48,8 @@ let rec permute l =
             for p in permute rest do
                 yield! inserts x p
     }
+
+let rec gcd a b =
+    match a, b with
+    | (a, 0) -> a
+    | (a, b) -> gcd b (a % b)
